@@ -38,21 +38,25 @@ io.on('connect', function(socket){
   });
 
   socket.on('join room', function(data){
-    var identifier = data.identifier;
-    socket.join(identifier);
-    io.to(identifier).emit('join room', {identifier: identifier, message: `you've joined room ${identifier}`});
+    var roomID = data.roomID;
+    socket.join(roomID);
+    io.to(roomID).emit('join room', {roomID: roomID, message: `you've joined room ${roomID}`});
+    var usersCount = channels[roomID].usersCount += 1;
+    io.emit('update room population', {roomID: roomID, usersCount: usersCount});
   });
 
   socket.on('leave room', function(data){
     var roomID = data.roomID;
     socket.leave(roomID);
     socket.emit('leave room', {message: `left room ${roomID}`});
+    var usersCount = channels[roomID].usersCount -= 1;
+    io.emit('update room population', {roomID: roomID, usersCount: usersCount});
   })
 
   socket.on('add room', function(data){
-    var identifier = generateID();
-    channels[identifier] = {roomName: data.roomName}
-    io.emit('add room', {roomName: data.roomName, identifier: identifier});
+    var roomID = generateID();
+    channels[roomID] = {roomName: data.roomName, usersCount: 0}
+    io.emit('add room', {roomName: data.roomName, roomID: roomID});
   });
 
 });

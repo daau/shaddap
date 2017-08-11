@@ -45,6 +45,7 @@
     var messageInput = document.getElementById("messageInput");
     var roomNameInput = document.getElementById("roomNameInput");
     var chatRoom = document.getElementById("chatRoom");
+    var chatBox = document.getElementById("chat");
     var roomsRoom = document.getElementById("roomsRoom");
 
     // Event listeners
@@ -73,31 +74,37 @@
     client.on('send message', function(data){
         var message = data.message;
         var speaker = data.speaker;
-        var el = document.getElementById("chat");
-        el.innerHTML += `<p>${speaker}: ${message}</p>`
+        chatBox.innerHTML += `<p>${speaker}: ${message}</p>`
     });
 
     client.on('add room', function(data){
         roomsList.innerHTML += (
             `<div class="room">
-                <a href="#" data-id="${data.identifier}">${data.roomName}</a>
+                <a href="#" data-id="${data.roomID}">${data.roomName}</a>
                 <span>5 users</span>
             </div>`
         )
     });
 
     client.on('join room', function(data){
-        roomID = data.identifier;
+        roomID = data.roomID;
         chatRoom.style.display = "block";
         roomsRoom.style.display = "none";
-    })
+    });
 
     client.on('leave room', function(data){
         alert(data.message);
         roomID = '';
         chatRoom.style.display = "none";
         roomsRoom.style.display = "block";
-    })
+        chatBox.innerHTML = '';
+    });
+
+    client.on('update room population', function(data){
+        var el = document.querySelectorAll(`[data-id="${data.roomID}"`)[0];
+        var countEl = el.nextElementSibling;
+        countEl.innerHTML = `${data.usersCount} users`
+    });
 
     // Functions
     function leaveRoom(event){
@@ -122,6 +129,6 @@
     function joinRoom(event){
         event.preventDefault();
         if (event.target.tagName != 'A') return;
-        client.emit('join room', {identifier: event.target.dataset.id});
+        client.emit('join room', {roomID: event.target.dataset.id});
     }
 </script> 
