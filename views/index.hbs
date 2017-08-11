@@ -77,7 +77,7 @@
         roomsList.innerHTML += (
             `<div class="room">
                 <a href="#" data-id="${data.roomID}">${data.roomName}</a>
-                <span>5 users</span>
+                <span>0 users</span>
             </div>`
         )
     });
@@ -118,7 +118,7 @@
     function addRoom(event){
         event.preventDefault();
         var roomName = roomNameInput.value;
-        roomName.value = '';
+        roomNameInput.value = '';
         client.emit('add room', {roomName: roomName});
     }
 

@@ -28,6 +28,11 @@ io.on('connect', function(socket){
 
   socket.on('disconnect', function(){
     --usersCount;
+    var roomID = socket.roomID
+    if (roomID) {
+      rooms[roomID].usersCount -= 1;
+      io.emit('update room population', {roomID: roomID, usersCount: rooms[roomID].usersCount});
+    }
     socket.broadcast.emit('update users', {
       usersCount: usersCount
     });
@@ -40,6 +45,7 @@ io.on('connect', function(socket){
   socket.on('join room', function(data){
     var roomID = data.roomID;
     socket.join(roomID);
+    socket.roomID = roomID;
     io.to(roomID).emit('join room', {roomID: roomID, message: `you've joined room ${roomID}`});
     var usersCount = rooms[roomID].usersCount += 1;
     io.emit('update room population', {roomID: roomID, usersCount: usersCount});
@@ -48,6 +54,7 @@ io.on('connect', function(socket){
   socket.on('leave room', function(data){
     var roomID = data.roomID;
     socket.leave(roomID);
+    socket.roomID = null;
     socket.emit('leave room', {message: `left room ${roomID}`});
     var usersCount = rooms[roomID].usersCount -= 1;
     io.emit('update room population', {roomID: roomID, usersCount: usersCount});
