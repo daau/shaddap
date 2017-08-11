@@ -3,14 +3,17 @@
 <span id="users">{{usersCount}} users currently online</span>
 <p id="username">currently logged in as snarky-penguin</p>
 </header>
-<section id="chat">
-</section>
-<section>
-    <form id="input">
-        <input type="text" placeholder="type a message" id="messageInput">
-        <input type="submit">
-    </form>
-</section>
+<main id="chatRoom" style="border:1px solid black; display:none;">
+    <section id="chat">
+    </section>
+    <section>
+        <form id="input">
+            <input type="text" placeholder="type a message" id="messageInput">
+            <input type="submit">
+        </form>
+        <button id="leaveRoom">Leave room</button>
+    </section>
+</main>
 <section>
     <h2>Rooms online:</h2>
     <div id="roomsList">
@@ -33,10 +36,12 @@
     <input type="submit" value="Create room">
 </form>
 
+
 <script>
     var client = io();
     document.getElementById("input").addEventListener("submit", sendMessage);
     document.getElementById("room").addEventListener("submit", addRoom);
+    document.getElementById("leaveRoom").addEventListener("click", leaveRoom);
     var roomsList = document.getElementById("roomsList")
     var messageInput = document.getElementById("messageInput");
     var roomNameInput = document.getElementById("roomNameInput");
@@ -44,6 +49,7 @@
     roomsList.addEventListener("click", joinRoom);
 
     var username;
+    var roomID;
 
     client.on('login', function(data){
         username = data.username;
@@ -73,9 +79,21 @@
         )
     });
 
-    client.on('room message', function(data){
-        alert(data.message);
+    client.on('join room', function(data){
+        roomID = data.identifier;
     })
+
+    client.on('leave room', function(data){
+        alert(data.message);
+        roomID = '';
+        // remove chat room
+        // go back to main menu
+    })
+
+    function leaveRoom(event){
+        event.preventDefault();
+        client.emit('leave room', {roomID: roomID});
+    }
 
     function sendMessage(event){
         event.preventDefault();
