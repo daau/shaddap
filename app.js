@@ -12,7 +12,7 @@ var randomUsername = require('./helpers/usernames');
 var generateID = require('./helpers/generateID')
 
 let usersCount = 0;
-let channels = {};
+let rooms = {};
 
 // Socket logic
 io.on('connect', function(socket){
@@ -41,7 +41,7 @@ io.on('connect', function(socket){
     var roomID = data.roomID;
     socket.join(roomID);
     io.to(roomID).emit('join room', {roomID: roomID, message: `you've joined room ${roomID}`});
-    var usersCount = channels[roomID].usersCount += 1;
+    var usersCount = rooms[roomID].usersCount += 1;
     io.emit('update room population', {roomID: roomID, usersCount: usersCount});
   });
 
@@ -49,13 +49,13 @@ io.on('connect', function(socket){
     var roomID = data.roomID;
     socket.leave(roomID);
     socket.emit('leave room', {message: `left room ${roomID}`});
-    var usersCount = channels[roomID].usersCount -= 1;
+    var usersCount = rooms[roomID].usersCount -= 1;
     io.emit('update room population', {roomID: roomID, usersCount: usersCount});
   })
 
   socket.on('add room', function(data){
     var roomID = generateID();
-    channels[roomID] = {roomName: data.roomName, usersCount: 0}
+    rooms[roomID] = {roomName: data.roomName, usersCount: 0}
     io.emit('add room', {roomName: data.roomName, roomID: roomID});
   });
 
@@ -76,7 +76,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use('/', function(req, res, next){
+  req.rooms = rooms;
+  next();
+},
+index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

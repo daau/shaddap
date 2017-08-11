@@ -18,17 +18,13 @@
     <h2>Rooms online:</h2>
     <div id="roomsList">
         <div class="room">
-            <a href="#" data-id="hey">My coool room</a>
-            <span>5 users</span>
-        </div>
-        <div class="room">
-            <a href="#" data-id="nah">My coool room</a>
-            <span>5 users</span>
-        </div>
-        <div class="room">
-            <a href="#" data-id="bye">My coool room</a>
-            <span>5 users</span>
-        </div>        
+        {{#each rooms}}
+            <div class="room">
+                <a data-id="{{@key}}">{{roomName}}</a>
+                <span>{{usersCount}} users</span>
+            </div>
+        {{/each}}
+        </div>  
     </div>
     <form id="room">
         <input type="text" placeholder="Name your room" id="roomNameInput">
