@@ -34,7 +34,7 @@ io.on('connect', function(socket){
   });
 
   socket.on('send message', function(data){
-    io.emit('send message', {message: data.message, speaker: data.speaker})
+    io.to(data.roomID).emit('send message', {message: data.message, speaker: data.speaker})
   });
 
   socket.on('join room', function(data){
