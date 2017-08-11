@@ -1,5 +1,99 @@
 <header>
 <h1>SHADDAP!</h1>
-<span>{{usersCount}} users currently online</span>
-<p>currently logged in as snarky-penguin</p>
+<span id="users">{{usersCount}} users currently online</span>
+<p id="username">currently logged in as snarky-penguin</p>
 </header>
+<section id="chat">
+</section>
+<section>
+    <form id="input">
+        <input type="text" placeholder="type a message" id="messageInput">
+        <input type="submit">
+    </form>
+</section>
+<section>
+    <h2>Rooms online:</h2>
+    <div id="roomsList">
+        <div class="room">
+            <a href="#" data-id="hey">My coool room</a>
+            <span>5 users</span>
+        </div>
+        <div class="room">
+            <a href="#" data-id="nah">My coool room</a>
+            <span>5 users</span>
+        </div>
+        <div class="room">
+            <a href="#" data-id="bye">My coool room</a>
+            <span>5 users</span>
+        </div>        
+    </div>
+</section>
+<form id="room">
+    <input type="text" placeholder="Name your room" id="roomNameInput">
+    <input type="submit" value="Create room">
+</form>
+
+<script>
+    var client = io();
+    document.getElementById("input").addEventListener("submit", sendMessage);
+    document.getElementById("room").addEventListener("submit", addRoom);
+    var roomsList = document.getElementById("roomsList")
+    var messageInput = document.getElementById("messageInput");
+    var roomNameInput = document.getElementById("roomNameInput");
+
+    roomsList.addEventListener("click", joinRoom);
+
+    var username;
+
+    client.on('login', function(data){
+        username = data.username;
+        var el = document.getElementById("username");
+        el.innerHTML = `currently logged in as ${username}`;
+    });
+
+    client.on('update users', function(data){
+        var usersCount = data.usersCount;
+        var el = document.getElementById("users");
+        el.innerHTML = `${usersCount} users currently online`;
+    });
+
+    client.on('send message', function(data){
+        var message = data.message;
+        var speaker = data.speaker;
+        var el = document.getElementById("chat");
+        el.innerHTML += `<p>${speaker}: ${message}</p>`
+    });
+
+    client.on('add room', function(data){
+        roomsList.innerHTML += (
+            `<div class="room">
+                <a href="#" data-id="${data.identifier}">${data.roomName}</a>
+                <span>5 users</span>
+            </div>`
+        )
+    });
+
+    client.on('room message', function(data){
+        alert(data.message);
+    })
+
+    function sendMessage(event){
+        event.preventDefault();
+        var message = messageInput.value;
+        messageInput.value = '';
+        client.emit('send message', {message: message, speaker: username});
+    }
+
+    function addRoom(event){
+        event.preventDefault();
+        var roomName = roomNameInput.value;
+        roomName.value = '';
+        client.emit('add room', {roomName: roomName});
+    }
+
+    function joinRoom(event){
+        event.preventDefault();
+        if (event.target.tagName != 'A') return;
+        client.emit('join room', {identifier: event.target.dataset.id});
+    }
+</script> 

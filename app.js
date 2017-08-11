@@ -8,21 +8,59 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var randomUsername = require('./helpers/usernames');
+var generateID = require('./helpers/generateID')
 
 let usersCount = 0;
+let channels = {};
 
 // Socket logic
 io.on('connect', function(socket){
-  usersCount++;
-  console.log(`Users count: ${usersCount}`);
+  ++usersCount;
+  socket.username = randomUsername();
+  socket.emit('login', {
+    username: socket.username
+  });
 
-  socket.on('disconnect', function(socket){
-    usersCount--;
-    console.log(`Users count: ${usersCount}`);
+  io.emit('update users', {
+    usersCount: usersCount
+  });
+
+  socket.on('disconnect', function(){
+    --usersCount;
+    socket.broadcast.emit('update users', {
+      usersCount: usersCount
+    });
+  });
+
+  socket.on('send message', function(data){
+    io.emit('send message', {message: data.message, speaker: data.speaker})
+  });
+
+  socket.on('join room', function(data){
+    var identifier = data.identifier;
+    socket.join(identifier);
+    console.log(`user joined the room ${identifier}`);
+    io.to(identifier).emit('room message', {message: `you've joined room ${identifier}`});
+  });
+
+  socket.on('leave room', function(data){
+    // Unsubscribe the user from the socket room
+  })
+
+  socket.on('add room', function(data){
+    var identifier = generateID();
+    channels[identifier] = {roomName: data.roomName}
+    console.log(channels);
+    io.emit('add room', {roomName: data.roomName, identifier: identifier});
+
+    // Create a new socket room
   });
 
 });
 
+// Need to remove any empty rooms after 2 minutes or so...
+// setInterval(() => {console.log("hey")}, 1000);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,10 +74,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', function(req, res, next){
-  req.usersCount = usersCount;
-  next();
-}, index);
+app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
