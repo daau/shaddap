@@ -39,6 +39,34 @@ input:focus {
   height: 100%;
 }
 
+#chatForm{
+  display: flex;
+  justify-content: space-between;
+  width: 480px;
+  margin: 0 auto;
+
+}
+
+#messageInput {
+  font: 16px "Roboto", Helvetica, Arial, sans-serif;
+  color: #95989A;
+  height: 30px;
+  width: 350px;
+  padding-left: 12px;
+  border: 1px solid #95989A;
+  border-radius: 4px;
+}
+
+#messageButton {
+  font: 16px "Roboto", Helvetica, Arial, sans-serif;
+  color: #95989A;
+  height: 34px;
+  width: 110px;
+  border: 1px solid #95989A;
+  background-color: white;
+  border-radius: 4px;
+}
+
 header {
   margin-top:40px;
   text-align: center;

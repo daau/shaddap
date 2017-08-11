@@ -3,12 +3,12 @@
     <div id="users">{{usersCount}} users currently online</div>
     <div id="username">Logged in as snarky-penguin</div>
 </header>
-<main id="chatRoom" style="border:1px solid black; display:none;">
+<main id="chatRoom" style="display: none;">
     <section id="chat" style="flex: 1; overflow: auto; margin: 20px 0;">
     </section>
-    <form id="chatInput">
+    <form id="chatForm">
         <input type="text" placeholder="type a message" id="messageInput">
-        <input type="submit">
+        <input type="submit" id="messageButton">
     </form>
     <button id="leaveRoom">Leave room</button>
 </main>

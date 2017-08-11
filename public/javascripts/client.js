@@ -8,10 +8,10 @@ var chatRoom = document.getElementById("chatRoom");
 var chatBox = document.getElementById("chat");
 var roomsRoom = document.getElementById("roomsRoom");
 var addRoomForm = document.getElementById("addRoom");
-var chatInput = document.getElementById("chatInput");
+var chatForm = document.getElementById("chatForm");
 
 // Event listeners
-chatInput.addEventListener("submit", sendMessage);
+chatForm.addEventListener("submit", sendMessage);
 document.getElementById("leaveRoom").addEventListener("click", leaveRoom);
 roomsList.addEventListener("click", joinRoom);
 addRoomForm.addEventListener("submit", addRoom);
@@ -61,7 +61,7 @@ client.on('leave room', function(data){
     chatRoom.style.display = "none";
     chatBox.innerHTML = '';
     roomsRoom.style.display = "block";
-    addRoomForm.display = 'block';
+    addRoomForm.style.display = 'flex';
 });
 
 client.on('update room population', function(data){
