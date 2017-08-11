@@ -1,7 +1,7 @@
 <header>
-<h1>SHADDAP!</h1>
-<span id="users">{{usersCount}} users currently online</span>
-<p id="username">currently logged in as snarky-penguin</p>
+    <h1>SHADDAP!</h1>
+    <div id="users">{{usersCount}} users currently online</div>
+    <div id="username">Logged in as snarky-penguin</div>
 </header>
 <main id="chatRoom" style="border:1px solid black; display:none;">
     <section id="chat">
@@ -14,117 +14,18 @@
         <button id="leaveRoom">Leave room</button>
     </section>
 </main>
-<section id="roomsRoom">
-    <h2>Rooms online:</h2>
+<section id="roomsRoom" style="flex: 1; overflow: auto; margin: 20px 0;">
+    <h2>Rooms online</h2>
     <div id="roomsList">
-        <div class="room">
         {{#each rooms}}
             <div class="room">
                 <a data-id="{{@key}}">{{roomName}}</a>
                 <span>{{usersCount}} users</span>
             </div>
         {{/each}}
-        </div>  
     </div>
-    <form id="room">
-        <input type="text" placeholder="Name your room" id="roomNameInput">
-        <input type="submit" value="Create room">
-    </form>
 </section>
-
-
-<script>
-    var client = io();
-
-    // Elements
-    var roomsList = document.getElementById("roomsList")
-    var messageInput = document.getElementById("messageInput");
-    var roomNameInput = document.getElementById("roomNameInput");
-    var chatRoom = document.getElementById("chatRoom");
-    var chatBox = document.getElementById("chat");
-    var roomsRoom = document.getElementById("roomsRoom");
-
-    // Event listeners
-    document.getElementById("input").addEventListener("submit", sendMessage);
-    document.getElementById("room").addEventListener("submit", addRoom);
-    document.getElementById("leaveRoom").addEventListener("click", leaveRoom);
-    roomsList.addEventListener("click", joinRoom);
-
-    // Local vars
-    var username;
-    var roomID;
-
-    // Clientside socket events
-    client.on('login', function(data){
-        username = data.username;
-        var el = document.getElementById("username");
-        el.innerHTML = `currently logged in as ${username}`;
-    });
-
-    client.on('update users', function(data){
-        var usersCount = data.usersCount;
-        var el = document.getElementById("users");
-        el.innerHTML = `${usersCount} users currently online`;
-    });
-
-    client.on('send message', function(data){
-        var message = data.message;
-        var speaker = data.speaker;
-        chatBox.innerHTML += `<p>${speaker}: ${message}</p>`
-    });
-
-    client.on('add room', function(data){
-        roomsList.innerHTML += (
-            `<div class="room">
-                <a href="#" data-id="${data.roomID}">${data.roomName}</a>
-                <span>0 users</span>
-            </div>`
-        )
-    });
-
-    client.on('join room', function(data){
-        roomID = data.roomID;
-        chatRoom.style.display = "block";
-        roomsRoom.style.display = "none";
-    });
-
-    client.on('leave room', function(data){
-        alert(data.message);
-        roomID = '';
-        chatRoom.style.display = "none";
-        roomsRoom.style.display = "block";
-        chatBox.innerHTML = '';
-    });
-
-    client.on('update room population', function(data){
-        var el = document.querySelectorAll(`[data-id="${data.roomID}"`)[0];
-        var countEl = el.nextElementSibling;
-        countEl.innerHTML = `${data.usersCount} users`
-    });
-
-    // Functions
-    function leaveRoom(event){
-        event.preventDefault();
-        client.emit('leave room', {roomID: roomID});
-    }
-
-    function sendMessage(event){
-        event.preventDefault();
-        var message = messageInput.value;
-        messageInput.value = '';
-        client.emit('send message', {message: message, speaker: username, roomID: roomID});
-    }
-
-    function addRoom(event){
-        event.preventDefault();
-        var roomName = roomNameInput.value;
-        roomNameInput.value = '';
-        client.emit('add room', {roomName: roomName});
-    }
-
-    function joinRoom(event){
-        event.preventDefault();
-        if (event.target.tagName != 'A') return;
-        client.emit('join room', {roomID: event.target.dataset.id});
-    }
-</script> 
+<form id="addRoom" style="margin-bottom:50px;">
+    <input type="text" placeholder="Name your room" id="roomNameInput">
+    <input type="submit" value="Create room" id="roomNameButton">
+</form>

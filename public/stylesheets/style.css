@@ -1,12 +1,95 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,900i');
+
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 16px "Roboto", Helvetica, Arial, sans-serif;
+  margin: 0;
+  height: 100vh;
+  background-color: #EDEDED;
+  display: flex;
 }
 
 a {
   color: #00B7FF;
+  text-decoration: none; 
+  cursor: pointer;
 }
 
-#app{
+span {
+  color: #95989A;
+}
 
+input:focus {
+  outline: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width:1024px;
+  height: 100%;
+  background-color: white;
+}
+
+header {
+  margin-top:40px;
+  text-align: center;
+  color: #95989A;
+}
+
+h1 {
+  font-weight: 900;
+  font-style: italic;
+  font-size: 40px;
+  margin: 0;
+  color: #2F2F2F;
+}
+
+h2 {
+  text-align: center;
+  color: #95989A;
+  font-weight:400;
+  font-size: 25px;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+
+.room {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+#roomsList {
+  width: 500px;
+  margin: 0 auto;
+}
+
+#addRoom{
+  display: flex;
+  justify-content: space-between;
+  width: 480px;
+  margin: 0 auto;
+
+}
+
+#roomNameInput {
+  font: 16px "Roboto", Helvetica, Arial, sans-serif;
+  color: #95989A;
+  height: 30px;
+  width: 350px;
+  padding-left: 12px;
+  border: 1px solid #95989A;
+  border-radius: 4px;
+}
+
+#roomNameButton {
+  font: 16px "Roboto", Helvetica, Arial, sans-serif;
+  color: #95989A;
+  height: 34px;
+  width: 110px;
+  border: 1px solid #95989A;
+  background-color: white;
+  border-radius: 4px;
 }
