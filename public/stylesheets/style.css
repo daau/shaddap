@@ -31,6 +31,14 @@ input:focus {
   background-color: white;
 }
 
+#chatRoom {
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  margin: 0 auto;
+  height: 100%;
+}
+
 header {
   margin-top:40px;
   text-align: center;

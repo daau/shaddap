@@ -4,15 +4,13 @@
     <div id="username">Logged in as snarky-penguin</div>
 </header>
 <main id="chatRoom" style="border:1px solid black; display:none;">
-    <section id="chat">
+    <section id="chat" style="flex: 1; overflow: auto; margin: 20px 0;">
     </section>
-    <section>
-        <form id="input">
-            <input type="text" placeholder="type a message" id="messageInput">
-            <input type="submit">
-        </form>
-        <button id="leaveRoom">Leave room</button>
-    </section>
+    <form id="chatInput">
+        <input type="text" placeholder="type a message" id="messageInput">
+        <input type="submit">
+    </form>
+    <button id="leaveRoom">Leave room</button>
 </main>
 <section id="roomsRoom" style="flex: 1; overflow: auto; margin: 20px 0;">
     <h2>Rooms online</h2>

@@ -7,14 +7,14 @@ var roomNameInput = document.getElementById("roomNameInput");
 var chatRoom = document.getElementById("chatRoom");
 var chatBox = document.getElementById("chat");
 var roomsRoom = document.getElementById("roomsRoom");
-var addRoomForm = document.getElementById("addRoom")
+var addRoomForm = document.getElementById("addRoom");
+var chatInput = document.getElementById("chatInput");
 
 // Event listeners
-document.getElementById("input").addEventListener("submit", sendMessage);
+chatInput.addEventListener("submit", sendMessage);
 document.getElementById("leaveRoom").addEventListener("click", leaveRoom);
 roomsList.addEventListener("click", joinRoom);
 addRoomForm.addEventListener("submit", addRoom);
-
 
 // Local vars
 var username;
@@ -37,6 +37,7 @@ client.on('send message', function(data){
     var message = data.message;
     var speaker = data.speaker;
     chatBox.innerHTML += `<p>${speaker}: ${message}</p>`
+    chatBox.scrollTop = chatBox.scrollHeight;
 });
 
 client.on('add room', function(data){
@@ -50,7 +51,7 @@ client.on('add room', function(data){
 
 client.on('join room', function(data){
     roomID = data.roomID;
-    chatRoom.style.display = "block";
+    chatRoom.style.display = "flex";
     roomsRoom.style.display = "none";
     addRoomForm.style.display = 'none';
 });
@@ -60,7 +61,7 @@ client.on('leave room', function(data){
     chatRoom.style.display = "none";
     chatBox.innerHTML = '';
     roomsRoom.style.display = "block";
-    addRoomForm.dispaly = 'block';
+    addRoomForm.display = 'block';
 });
 
 client.on('update room population', function(data){
