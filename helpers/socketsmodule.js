@@ -25,15 +25,15 @@ const iolauncher = function(server){
             var roomID = socket.roomID
             if (roomID) {
             rooms[roomID].usersCount -= 1;
-            io.emit('update room population', {roomID: roomID, usersCount: rooms[roomID].usersCount});
+                io.emit('update room population', {roomID: roomID, usersCount: rooms[roomID].usersCount});
             }
             socket.broadcast.emit('update users', {
-            usersCount: usersCount
+                usersCount: usersCount
             });
         });
 
         socket.on('send message', function(data){
-            io.to(data.roomID).emit('send message', {message: data.message, speaker: data.speaker})
+            io.to(socket.roomID).emit('send message', {message: data.message, speaker: data.speaker})
         });
 
         socket.on('join room', function(data){

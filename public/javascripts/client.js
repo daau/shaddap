@@ -80,7 +80,7 @@ function sendMessage(event){
     event.preventDefault();
     var message = messageInput.value;
     messageInput.value = '';
-    client.emit('send message', {message: message, speaker: username, roomID: roomID});
+    client.emit('send message', {message: message, speaker: username});
 }
 
 function addRoom(event){
