@@ -20,6 +20,16 @@ To be updated in the future:
 * Mobile CSS styles
 * User customizeable names
 
+### Directory
+
+Purpose | Location
+------------ | -------------
+Main application | ./App.js
+Server-side socket logic | helpers/socketsmodule.js
+Client-side socket logic | publicjavascript/client.js
+Misc helpers | helpers/*
+Run server | bin/www
+
 ### Installation
 
 ```
