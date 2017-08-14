@@ -36,3 +36,6 @@ Run server | bin/www
 npm install
 npm start
 ```
+
+### License
+This software is released under the MIT license.
