@@ -34,7 +34,14 @@ client.on('update users', function(data){
 client.on('send message', function(data){
     var message = data.message;
     var speaker = data.speaker;
-    chatBox.innerHTML += `<p>${speaker}: ${message}</p>`
+    chatBox.innerHTML += `<div class="message-self"><span class="message-header">${speaker}</span><p class="message-contents">${message}</p></div>`
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+client.on('receive message', function(data){
+    var message = data.message;
+    var speaker = data.speaker;
+    chatBox.innerHTML += `<div class="message-other"><span class="message-header">${speaker}</span><p class="message-contents">${message}</p></div>`
     chatBox.scrollTop = chatBox.scrollHeight;
 });
 

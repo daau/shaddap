@@ -129,3 +129,39 @@ h2 {
   background-color: white;
   border-radius: 4px;
 }
+
+.message-other {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.message-self {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.message-header {
+  display: block;
+}
+
+.message-other > .message-contents {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #EDEDED;
+  color: #404040;
+  max-width: 400px;
+}
+
+.message-self > .message-contents {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #2196F3;
+  color: white;
+  max-width: 400px;
+}

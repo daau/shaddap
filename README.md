@@ -1,6 +1,7 @@
 # SHADDAP!
 
 ![Screenshot](/documentation/screenshot.png?raw=true "Screenshot")
+![Screenshot](/documentation/chat.png?raw=true "Screenshot")
 
 This is a lightweight chat room client built with node.js (express) and socket.io. No additional javascript libraries or frameworks are necessary to run this app (not even jQuery).
 

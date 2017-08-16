@@ -33,12 +33,13 @@ const iolauncher = function(server){
 
         socket.on('send message', (data) => {
             if (data.message && data.message.length > 0){
-                io.to(socket.roomID).emit('send message', {message: data.message, speaker: socket.username})
+                socket.to(socket.roomID).emit('receive message', {message: data.message, speaker: socket.username});
+                socket.emit('send message', {message: data.message, speaker: socket.username});
             }
         });
 
         socket.on('join room', (data) => {
-            if (!data.roomID) { return; }
+            if (!data.roomID || !rooms[data.roomID]) { return; }
 
             var roomID = data.roomID;
             socket.join(roomID);
