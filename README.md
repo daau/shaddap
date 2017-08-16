@@ -12,14 +12,6 @@ Features:
 * Serverside rendered Handlebars templates
 * No frontend frameworks used, making it super easy to integrate into your existing webapps
 
-To be updated in the future:
-* Certain client side details should be stored serverside instead
-* Serverside validation of client submitted data
-* Better error handling
-* Improve the chat room CSS styles
-* Mobile CSS styles
-* User customizeable names
-
 ### Directory
 
 Purpose | Location

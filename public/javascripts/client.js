@@ -22,15 +22,13 @@ var roomID;
 
 // Clientside socket events
 client.on('login', function(data){
-    username = data.username;
     var el = document.getElementById("username");
-    el.innerHTML = `Logged in as ${username}`;
+    el.innerHTML = `Logged in as ${data.username}`;
 });
 
 client.on('update users', function(data){
-    var usersCount = data.usersCount;
     var el = document.getElementById("users");
-    el.innerHTML = `${usersCount} users currently online`;
+    el.innerHTML = `${data.usersCount} users currently online`;
 });
 
 client.on('send message', function(data){
@@ -80,7 +78,7 @@ function sendMessage(event){
     event.preventDefault();
     var message = messageInput.value;
     messageInput.value = '';
-    client.emit('send message', {message: message, speaker: username});
+    client.emit('send message', {message: message});
 }
 
 function addRoom(event){
